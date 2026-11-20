@@ -1,0 +1,40 @@
+{
+  "name": "generative-tui-experiment",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "postinstall": "mkdir -p node_modules/@minimal-agent && ln -sfn ../../../../minimal-agent-core node_modules/@minimal-agent/core && ln -sfn ../../../../minimal-agent-config node_modules/@minimal-agent/config",
+    "start": "bun run src/main.tsx",
+    "mock": "bun run src/main.tsx --mock",
+    "models": "bun run src/main.tsx --list-models",
+    "schema": "bun run src/main.tsx --schema",
+    "test": "bun test test/core.test.ts test/tools.test.ts test/render.test.tsx test/app.test.tsx",
+    "typecheck": "tsc --noEmit -p .",
+    "lint": "oxlint --no-ignore $(find src test -name '*.ts' -o -name '*.tsx')",
+    "lint:fix": "oxlint --no-ignore --fix $(find src test -name '*.ts' -o -name '*.tsx')",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "biome:check": "biome check .",
+    "biome:fix": "biome check --write .",
+    "fix": "biome check --write . && bun run lint:fix",
+    "check": "bun run typecheck && bun run lint && bun run biome:check && bun run test:all",
+    "test:e2e": "bun test test/e2e.test.ts",
+    "test:all": "bun test"
+  },
+  "dependencies": {
+    "ink": "^6",
+    "react": "^19",
+    "zod": "^4"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.6",
+    "@types/react": "^19",
+    "@xterm/headless": "^6.0.0",
+    "bun-types": "^1.4.4",
+    "ink-testing-library": "^4.0.0",
+    "oxlint": "1.92.0",
+    "oxlint-tsgolint": "7.0.2006",
+    "typescript": "7.0.2"
+  }
+}

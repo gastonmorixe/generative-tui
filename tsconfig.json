@@ -1,0 +1,12 @@
+{
+  "extends": "@minimal-agent/config/tsconfig.json",
+  "compilerOptions": {
+    "module": "Preserve",
+    "jsx": "react-jsx",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "verbatimModuleSyntax": true
+  },
+  "include": ["src", "test"]
+}

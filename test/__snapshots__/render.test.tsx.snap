@@ -1,0 +1,59 @@
+// Bun Snapshot v1, https://bun.sh/docs/test/snapshots
+
+exports[`BlockView text renders a stable frame at 40 columns 1`] = `
+"hello
+world"
+`;
+
+exports[`BlockView list renders a stable frame at 40 columns 1`] = `
+"• one
+• two"
+`;
+
+exports[`BlockView keyValue renders a stable frame at 40 columns 1`] = `
+"p50 84
+p95 131"
+`;
+
+exports[`BlockView table renders a stable frame at 40 columns 1`] = `
+"Name │ Fails
+─────┼──────
+a    │ 1
+bb   │ 22"
+`;
+
+exports[`BlockView progress renders a stable frame at 40 columns 1`] = `"e2e           ███████████░░░░░░░░░░  50%"`;
+
+exports[`BlockView badges renders a stable frame at 40 columns 1`] = `" ok"`;
+
+exports[`BlockView code renders a stable frame at 40 columns 1`] = `
+"┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ bun test                                                                                         │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘"
+`;
+
+exports[`BlockView sparkline renders a stable frame at 40 columns 1`] = `"p95 ▁▅▃█ 1–8"`;
+
+exports[`BlockView barChart renders a stable frame at 40 columns 1`] = `
+"a ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 10 ms
+b ■■■■■■■■■■■■■■■■ 5 ms"
+`;
+
+exports[`Sections a full dashboard frame 1`] = `
+"╭────────────────────────────────────────────────────────────────────────────────────────╮
+│ Summary                                                                                │
+│ summary                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────────────────────────────────────────────────╮
+│ A                                                                                      │
+│ a                                                                                      │
+╰────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────────────────────────────────────────────────╮
+│ B                                                                                      │
+│ b                                                                                      │
+╰────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────────────────────────────────────────────────╮
+│ C                                                                                      │
+│ c                                                                                      │
+╰────────────────────────────────────────────────────────────────────────────────────────╯"
+`;

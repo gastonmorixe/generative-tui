@@ -1,0 +1,55 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  // Repo policy first (type-aware, no-floating-promises, the agreed "off" list).
+  "extends": ["./node_modules/@minimal-agent/config/oxlintrc.json"],
+  "plugins": ["typescript", "oxc", "import", "unicorn", "react", "promise"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "warn"
+  },
+  "settings": {
+    "react": { "version": "19" }
+  },
+  "ignorePatterns": ["node_modules/**"],
+  "rules": {
+    // React / Ink: hooks must be correct, list items need keys.
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "warn",
+    "react/jsx-key": "error",
+    "react/jsx-no-useless-fragment": "warn",
+    "react/react-in-jsx-scope": "off",
+    // Ink rows are positional and never reorder within one render.
+    "react/no-array-index-key": "off",
+
+    // Async hygiene beyond the shared no-floating-promises.
+    "typescript/no-misused-promises": ["error", { "checksVoidReturn": false }],
+    "typescript/switch-exhaustiveness-check": "error",
+    "promise/no-multiple-resolved": "error",
+
+    // Type hygiene.
+    "typescript/consistent-type-imports": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/no-non-null-assertion": "warn",
+    "import/no-cycle": "error",
+    "import/no-duplicates": "error",
+
+    "eqeqeq": ["error", "smart"],
+    "no-console": "off",
+    "unicorn/prefer-node-protocol": "error",
+    "unicorn/no-array-reduce": "off",
+    "unicorn/no-null": "off",
+
+    // The experiment stays small: split a file before it reaches this.
+    "max-lines": ["error", { "max": 400, "skipBlankLines": true, "skipComments": true }]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.ts", "**/*.test.tsx"],
+      "rules": {
+        "require-yield": "off",
+        "typescript/no-non-null-assertion": "off"
+      }
+    }
+  ]
+}

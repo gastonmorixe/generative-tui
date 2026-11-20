@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": ["@minimal-agent/config/biome"],
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "src/**",
+      "test/**",
+      "*.json",
+      "!node_modules/**",
+      "!bun.lock",
+      "!test/__snapshots__/**"
+    ]
+  }
+}
