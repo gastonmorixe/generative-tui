@@ -8,7 +8,7 @@ validation), Ink 6 and React 19 (rendering).
 ## Run
 
 ```sh
-bun install                 # also links ../../minimal-agent-{core,config}
+bun install                 # fetches @minimal-agent/{core,config} from GitHub
 bun run mock                # offline: canned streamed screen
 bun run start -- --model claude-haiku-5-5 --provider anthropic "a dashboard of X"
 bun run start -- --once --model ... "prompt"   # headless: print the validated JSON
@@ -102,5 +102,15 @@ helper. Snapshots are in `test/__snapshots__` (update with `bun test -u`).
   `verbatimModuleSyntax`, and `noImplicitReturns`. `noUnusedLocals`,
   `noImplicitOverride`, and `exactOptionalPropertyTypes` are off: tsc also
   checks the linked core source, and core fails them.
-- `research/` is git-ignored in the monorepo, and oxlint skips git-ignored
-  directories. So `lint` passes explicit file paths with `--no-ignore`.
+- `lint` passes explicit file paths with `--no-ignore`, so it also works when
+  this directory is git-ignored by a parent repo.
+
+## Dependencies
+
+`@minimal-agent/core` and `@minimal-agent/config` are git dependencies, pinned
+to commits of
+[minimal-agent-core](https://github.com/gastonmorixe/minimal-agent-core) and
+[minimal-agent-config](https://github.com/gastonmorixe/minimal-agent-config)
+(submodules of the [minimal-agent](https://github.com/gastonmorixe/minimal-agent)
+monorepo). To upgrade, change the commit hash in `package.json` and run
+`bun install`. To develop against a local checkout, use `bun link`.

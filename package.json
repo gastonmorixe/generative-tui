@@ -4,7 +4,6 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "postinstall": "mkdir -p node_modules/@minimal-agent && ln -sfn ../../../../minimal-agent-core node_modules/@minimal-agent/core && ln -sfn ../../../../minimal-agent-config node_modules/@minimal-agent/config",
     "start": "bun run src/main.tsx",
     "mock": "bun run src/main.tsx --mock",
     "models": "bun run src/main.tsx --list-models",
@@ -23,12 +22,14 @@
     "test:all": "bun test"
   },
   "dependencies": {
+    "@minimal-agent/core": "github:gastonmorixe/minimal-agent-core#919322975585949f4c85f88dcfe898ea734aed60",
     "ink": "^6",
     "react": "^19",
     "zod": "^4"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.6",
+    "@minimal-agent/config": "github:gastonmorixe/minimal-agent-config#802b50afdd9c63b508b8ae3a6ee83efd366cb9da",
     "@types/react": "^19",
     "@xterm/headless": "^6.0.0",
     "bun-types": "^1.4.4",
