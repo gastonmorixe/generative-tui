@@ -24,6 +24,11 @@ import {
   type SessionEntry,
   type SessionOptions,
 } from "@minimal-agent/core"
+import {
+  loadUserConfig,
+  MAX_CONCURRENT_TOOL_CALLS_ENV,
+  resolveMaxConcurrentToolCalls,
+} from "@minimal-agent/core/host/config"
 import { type BootedHost, bootHost } from "@minimal-agent/core/host-kit/host-boot"
 import type { z } from "zod"
 
@@ -70,6 +75,17 @@ export interface ScreenAgent {
   close(): void
 }
 
+/**
+ * Concurrency cap of a tool wave, as in the CLI: env
+ * (MINIMAL_AGENT_MAX_CONCURRENT_TOOL_CALLS) > config.jsonc > core default (10).
+ */
+function resolveConcurrencyCap(): number {
+  return resolveMaxConcurrentToolCalls({
+    env: process.env[MAX_CONCURRENT_TOOL_CALLS_ENV],
+    config: loadUserConfig().maxConcurrentToolCalls,
+  }).value
+}
+
 /** Max repair turns after a zod failure. */
 const MAX_REPAIRS = 1
 
@@ -103,6 +119,7 @@ export class GenerativeAgent implements ScreenAgent {
       systemPrompt: SYSTEM_PROMPT,
       outputSchema: wireSchema(Screen),
       maxTokens: 8192,
+      maxConcurrentToolCalls: resolveConcurrencyCap(),
       ...(tools ? tools.sessionParts : {}),
     })
     return new GenerativeAgent(runtime, session, opts.model, tools?.names ?? [])

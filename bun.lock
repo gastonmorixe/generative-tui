@@ -5,7 +5,7 @@
     "": {
       "name": "generative-tui-experiment",
       "dependencies": {
-        "@minimal-agent/core": "github:gastonmorixe/minimal-agent-core#919322975585949f4c85f88dcfe898ea734aed60",
+        "@minimal-agent/core": "github:gastonmorixe/minimal-agent-core#4cc1fe33d492bd2cf044940adbb6446e7997605a",
         "ink": "^6",
         "react": "^19",
         "zod": "^4",
@@ -50,7 +50,7 @@
 
     "@minimal-agent/config": ["@minimal-agent/config@github:gastonmorixe/minimal-agent-config#802b50a", { "peerDependencies": { "@biomejs/biome": "2.6.6", "oxlint": "1.92.0", "oxlint-tsgolint": "7.0.2006", "typescript": "7.0.2" }, "optionalPeers": ["typescript"] }, "gastonmorixe-minimal-agent-config-802b50a", "sha512-4UEUridhSNX68jeHBf8piZZ2yBVrYlZDYQJ6jjrA0rsFXOdbqrxSX3CFp6Saq/pPseu6fzj7tfmGu7vnobH+QQ=="],
 
-    "@minimal-agent/core": ["@minimal-agent/core@github:gastonmorixe/minimal-agent-core#9193229", { "hasInstallScript": true }, "gastonmorixe-minimal-agent-core-9193229", "sha512-gjHYQv6qBLGXkGRliDYy2OJYfLBpxSDZsjvgFN2BwM11xARB1JvYH7rtlb1oDDII8vm9dTojHlgcMaSYiLa9uw=="],
+    "@minimal-agent/core": ["@minimal-agent/core@github:gastonmorixe/minimal-agent-core#4cc1fe3", { "hasInstallScript": true }, "gastonmorixe-minimal-agent-core-4cc1fe3", "sha512-IrOMJK7+LES63kTt9tKoeAiSJXlBC6AomNIjD6o5eYszEhObECCHUaZB0hfR7+G5C6CDM8/f0HQYOuEo2cRQdw=="],
 
     "@oxlint-tsgolint/darwin-arm64": ["@oxlint-tsgolint/darwin-arm64@7.0.2006", "", { "os": "darwin", "cpu": "arm64" }, "sha512-uc0MEHXZUDW23Zmo5X28eSNeSnP17jKnh9GiehpVZqhfy99ks8spyXT5Llar3tjDN7ppnQN0Qd9FK6WNkdD+fQ=="],
 

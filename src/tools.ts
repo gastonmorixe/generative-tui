@@ -92,6 +92,8 @@ export function webTools(host: BootedHost, model: string): WebTools {
   const allowed = new Set(names)
   const executor: ToolExecutor = {
     ...(inner.blobStoreEnabled !== undefined ? { blobStoreEnabled: inner.blobStoreEnabled } : {}),
+    // Keep the concurrency-safe policy: without it core runs every call serially.
+    ...(inner.concurrency ? { concurrency: inner.concurrency } : {}),
     execute: (toolUse, signal, context) =>
       allowed.has(toolUse.name)
         ? inner.execute(toolUse, signal, context)
