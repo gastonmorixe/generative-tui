@@ -4,7 +4,7 @@ import { validateAgainstSchema } from "@minimal-agent/core/sdk/output-schema"
 
 import { GenerativeAgent } from "../src/agent.ts"
 import { createMockTransport } from "../src/mock-transport.ts"
-import { parsePartialJson } from "../src/partial-json.ts"
+import { extractJsonText, parsePartialJson } from "../src/partial-json.ts"
 import { packRows } from "../src/render.tsx"
 import { PROPERTY_BUDGET, Screen } from "../src/schema.ts"
 import { schemaStats } from "../src/schema-budget.ts"
@@ -24,6 +24,39 @@ describe("parsePartialJson", () => {
     const full = await collectMockText()
     for (let i = 0; i < full.length; i++) parsePartialJson(full.slice(0, i))
     expect(parsePartialJson(full)).toEqual(JSON.parse(full))
+  })
+})
+
+describe("extractJsonText", () => {
+  const obj = '{"a":{"b":[1,"}"]},"c":"x"}'
+  it("returns a bare object unchanged", () => {
+    expect(extractJsonText(obj)).toBe(obj)
+    expect(extractJsonText("no json here")).toBe("")
+  })
+  it("cuts leading and trailing prose", () => {
+    expect(extractJsonText(`Here it is: ${obj}\nHope that helps! {}`)).toBe(obj)
+  })
+  it("cuts a markdown fence, with or without a language tag", () => {
+    expect(extractJsonText(`\`\`\`json\n${obj}\n\`\`\``)).toBe(obj)
+    expect(extractJsonText(`Sure:\n\`\`\`\n${obj}\n\`\`\`\nDone.`)).toBe(obj)
+  })
+  it("skips a { in prose before the fence", () => {
+    expect(extractJsonText(`Use {braces}:\n\`\`\`json\n${obj}\n\`\`\``)).toBe(obj)
+  })
+  it("ignores braces, escaped quotes and fences inside strings", () => {
+    const code = '{"type":"code","code":"```ts\\nconst s = \\"}\\"\\n```"}'
+    expect(extractJsonText(`${code} trailing`)).toBe(code)
+    expect(JSON.parse(extractJsonText(code)).type).toBe("code")
+  })
+  it("returns the rest of an unclosed object (streaming)", () => {
+    expect(extractJsonText('prose {"title":"He')).toBe('{"title":"He')
+    expect(extractJsonText('{"s":"a\\')).toBe('{"s":"a\\')
+  })
+  it("matches the mock screen at every prefix", async () => {
+    const full = await collectMockText()
+    for (let i = 1; i <= full.length; i++) {
+      expect(extractJsonText(full.slice(0, i))).toBe(full.slice(full.indexOf("{"), i))
+    }
   })
 })
 

@@ -159,17 +159,67 @@ function parseObject(c: Cursor): Record<string, unknown> {
   }
 }
 
+/** An opening markdown fence line: ```` ``` ```` or ```` ```json ````. */
+const OPEN_FENCE = /```[a-zA-Z]*[ \t]*\r?\n/g
+
 /**
- * Strip what some models put around a JSON answer even in structured-output
- * mode: leading prose up to the first `{`, and a markdown fence.
+ * The end (exclusive) of the JSON value that starts at `start`, or `-1` when
+ * the text ends before it closes. The scan skips string contents (with
+ * escapes), so a brace or a fence inside a string does not count.
+ */
+function valueEnd(text: string, start: number): number {
+  let depth = 0
+  let inString = false
+  for (let i = start; i < text.length; i++) {
+    const ch = text[i]
+    if (inString) {
+      if (ch === "\\") i++
+      else if (ch === '"') inString = false
+    } else if (ch === '"') inString = true
+    else if (ch === "{" || ch === "[") depth++
+    else if (ch === "}" || ch === "]") {
+      depth--
+      if (depth === 0) return i + 1
+    }
+  }
+  return -1
+}
+
+/**
+ * Cut the JSON object out of what some models put around it, even in
+ * structured-output mode: leading prose, a markdown fence, trailing prose.
+ *
+ * Candidate starts, in order: the first `{`, then the first `{` after each
+ * opening fence. For each candidate:
+ * - not closed yet (still streaming): return the rest of the text, for
+ *   {@link parsePartialJson};
+ * - closed and valid JSON: return exactly that object (trailing text cut);
+ * - closed but not JSON (for example `{braces}` in prose): try the next.
+ * When no candidate is valid JSON, return the first closed one, so the
+ * caller's `JSON.parse` error names the real problem.
+ *
+ * Returns `""` when there is no `{`.
  */
 export function extractJsonText(text: string): string {
-  const start = text.indexOf("{")
-  if (start < 0) return ""
-  let body = text.slice(start)
-  const fence = body.lastIndexOf("```")
-  if (fence >= 0) body = body.slice(0, fence)
-  return body
+  const starts = [text.indexOf("{")]
+  if (starts[0] === -1) return ""
+  for (const fence of text.matchAll(OPEN_FENCE)) {
+    const s = text.indexOf("{", fence.index + fence[0].length)
+    if (s > (starts.at(-1) ?? -1)) starts.push(s)
+  }
+  let fallback: string | undefined
+  for (const start of starts) {
+    const end = valueEnd(text, start)
+    if (end < 0) return text.slice(start)
+    const candidate = text.slice(start, end)
+    try {
+      JSON.parse(candidate)
+      return candidate
+    } catch {
+      fallback ??= candidate
+    }
+  }
+  return fallback as string
 }
 
 /** Parse a JSON prefix. See the module doc. */

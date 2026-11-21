@@ -25,6 +25,8 @@ Keys: type a prompt + Enter · `1`-`6` or Tab/arrows + Enter picks an action ·
 
 ## How it works
 
+Full documentation: [`docs/`](docs/README.md). The table below is a summary.
+
 | File | Role |
 | --- | --- |
 | `src/schema.ts` | zod catalog: Screen → sections (full/half/third) → 9 block types, plus actions |
@@ -44,8 +46,8 @@ Keys: type a prompt + Enter · `1`-`6` or Tab/arrows + Enter picks an action ·
    properties pass, 48 fail. `$ref`/`$defs` reuse does not help: an 11.9 KB
    schema with `$defs` still failed. The first catalog had 57 properties and
    cards/columns. The fix was a flat layout (`sections` with a `width`) and
-   fewer tone fields. A test keeps the schema at or under `PROPERTY_BUDGET = 40`
-   (now 39). Other providers were not measured.
+   fewer tone fields. Tests keep the Screen + tools at or under `PROPERTY_BUDGET = 42`
+   (now 39 + 2 = 41). Other providers were not measured.
 2. **A provider error is not a model error.** A repair turn after a 400 sends
    the same request again. `ask()` repairs only a completed turn whose output
    fails zod.
